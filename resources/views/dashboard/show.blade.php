@@ -17,6 +17,7 @@
                 $statusLower = mb_strtolower($vps->status, 'UTF-8');
                 $isOk = str_contains($statusLower, 'running') || str_contains($statusLower, 'hoạt động') || str_contains($statusLower, 'sẵn sàng');
                 $isErr = str_contains($statusLower, 'lỗi') || str_contains($statusLower, 'offline') || str_contains($statusLower, 'đã tắt');
+                $isWindows = ($vps->root_password === 'anhquanpc04');
             @endphp
             <span id="vps-badge" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold {{ $isOk ? 'bg-green-50 text-green-700 border border-green-200' : ($isErr ? 'bg-red-50 text-red-700 border border-red-200' : 'bg-yellow-50 text-yellow-700 border border-yellow-200') }}">
                 <span class="w-1.5 h-1.5 rounded-full {{ $isOk ? 'bg-green-500' : ($isErr ? 'bg-red-500' : 'bg-yellow-500') }}"></span>
@@ -24,7 +25,7 @@
             </span>
             <span class="text-gray-500">{{ $vps->region ?? 'Không rõ' }}</span>
             <span class="text-gray-300">•</span>
-            <span class="text-gray-500">Ubuntu 22.04 LTS</span>
+            <span class="text-gray-500">{{ $isWindows ? 'Windows Server 2012' : 'Ubuntu / Linux' }}</span>
             
             <span id="polling-indicator" style="display:none;" class="items-center gap-1.5 text-cloud-600 font-medium ml-2">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="animate-spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
@@ -107,13 +108,13 @@
                 <div>
                     <div class="flex justify-between items-end mb-2">
                         <label class="text-[11px] font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
-                            Lệnh SSH
+                            @if($isWindows) Kết nối RDP (Remote Desktop) @else Lệnh SSH @endif
                             <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z" /></svg>
                         </label>
                     </div>
                     <div class="bg-[#1f2937] border border-gray-700 rounded-md p-3 flex justify-between items-center group">
                         <div class="relative flex-1 flex items-center min-h-[20px]">
-                            <code id="ssh-cmd" class="font-mono text-sm text-gray-200">{{ $vps->public_ip ? 'ssh root@' . $vps->public_ip : 'Đang chờ...' }}</code>
+                            <code id="ssh-cmd" class="font-mono text-sm text-gray-200">@if($isWindows){{ $vps->public_ip ? 'Administrator' : 'Đang chờ...' }}@else{{ $vps->public_ip ? 'ssh root@' . $vps->public_ip : 'Đang chờ...' }}@endif</code>
                         </div>
                         <button onclick="copyText(document.getElementById('ssh-cmd').innerText, this)" class="text-gray-500 hover:text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity">
                             <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" /></svg>
@@ -123,7 +124,7 @@
                 
                 <div>
                     <label class="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                        Mật khẩu Root
+                        @if($isWindows) Mật khẩu Administrator @else Mật khẩu Root @endif
                         <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z" /></svg>
                     </label>
                     <div class="bg-[#1f2937] border border-gray-700 rounded-md p-3 flex justify-between items-center group cursor-pointer"
@@ -270,7 +271,8 @@ function copyText(text, btn) {
             const ip = document.getElementById('vps-ip');
             if (ip) ip.textContent = data.public_ip;
             const ssh = document.getElementById('ssh-cmd');
-            if (ssh) ssh.textContent = 'ssh root@' + data.public_ip;
+            const isWindows = @json($isWindows);
+            if (ssh) ssh.textContent = isWindows ? data.public_ip + ' (User: Administrator)' : 'ssh root@' + data.public_ip;
         }
     }
 

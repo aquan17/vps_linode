@@ -10,6 +10,7 @@ class LinodeAccount extends Model
         'label',
         'email',
         'api_token',
+        'windows_template_id',
         'is_active',
         'is_full',
         'promo_credit_usd',

@@ -35,10 +35,20 @@ class StoreController extends Controller
             ->keys()
             ->all();
 
+        // Calculate max allowed duration based on promo expiration
+        $maxDaysLeft = $accounts->map(function($a) {
+            return $a->promo_expires_at ? now()->diffInDays($a->promo_expires_at, false) : 999;
+        })->max() ?? 0;
+
+        $durations = config('linode.durations');
+        if ($maxDaysLeft < 60) {
+            unset($durations[2]); // Remove 2 months option if no account has >= 60 days
+        }
+
         return view('store.index', [
             'plans'            => $plans,
             'regions'          => $pricing->getRegions(),
-            'durations'        => config('linode.durations'),
+            'durations'        => $durations,
             'availablePlanIds' => $availablePlanIds,
             'maxAvailableUsd'  => round($maxAvailableUsd, 2),
         ]);
@@ -51,11 +61,23 @@ class StoreController extends Controller
             abort(404);
         }
 
+        $accounts = \App\Models\LinodeAccount::where('is_active', true)
+                        ->where('is_full', false)
+                        ->get();
+        $maxDaysLeft = $accounts->map(function($a) {
+            return $a->promo_expires_at ? now()->diffInDays($a->promo_expires_at, false) : 999;
+        })->max() ?? 0;
+
+        $durations = config('linode.durations');
+        if ($maxDaysLeft < 60) {
+            unset($durations[2]);
+        }
+
         return view('store.create', [
             'planId'    => $plan,
             'plan'      => $planData,
             'regions'   => $pricing->getRegions(),
-            'durations' => config('linode.durations'),
+            'durations' => $durations,
             'images'    => config('linode.images'),
         ]);
     }
@@ -90,12 +112,15 @@ class StoreController extends Controller
             return back()->withInput()->with('error', 'Số dư không đủ. Vui lòng nạp thêm tiền.');
         }
 
-        $account = $router->pickForPlan($costUsd, $months);
+        $imageConfig = config("linode.images.{$validated['image']}");
+        $isWindows = !empty($imageConfig['is_clone']);
+
+        $account = $router->pickForPlan($costUsd, $months, $isWindows);
         if (!$account) {
             return back()->withInput()->with('error', 'Tạm hết slot trên hệ thống. Vui lòng thử lại sau hoặc chọn gói nhỏ hơn.');
         }
 
-        $password = Str::random(14);
+        $password = $isWindows ? 'anhquanpc04' : Str::random(14);
         $expiresAt = Carbon::now()->addMonths($months);
 
         try {
@@ -133,13 +158,26 @@ class StoreController extends Controller
 
         try {
             $api->setToken($account->api_token);
-            $remote = $api->createInstance(
-                $plan['linode_type'],
-                $validated['region'],
-                $validated['label'],
-                $password,
-                $validated['image']          // ← OS được user chọn
-            );
+            
+            if ($isWindows) {
+                if (!$account->windows_template_id) {
+                    throw new \RuntimeException('Lỗi hệ thống: Tài khoản không được cấu hình VPS mẫu Windows.');
+                }
+                $remote = $api->cloneInstance(
+                    $account->windows_template_id,
+                    $plan['linode_type'],
+                    $validated['region'],
+                    $validated['label']
+                );
+            } else {
+                $remote = $api->createInstance(
+                    $plan['linode_type'],
+                    $validated['region'],
+                    $validated['label'],
+                    $password,
+                    $validated['image']          // ← OS được user chọn
+                );
+            }
 
             $hourly = isset($remote['type']) ? null : null;
             try {
@@ -148,12 +186,13 @@ class StoreController extends Controller
             } catch (\Throwable $ignored) {
             }
 
-            $remoteStatus = $remote['status'] ?? 'provisioning';
+            $remoteStatus = $remote['status'] ?? ($isWindows ? 'cloning' : 'provisioning');
             $statusMap = [
                 'running'      => 'Sẵn sàng',
                 'offline'      => 'Đã tắt',
                 'booting'      => 'Đang khởi động',
                 'provisioning' => 'Đang khởi tạo...',
+                'cloning'      => 'Đang nhân bản...',
                 'rebuilding'   => 'Đang rebuild...',
             ];
             $mappedStatus = $statusMap[$remoteStatus] ?? 'Đang khởi tạo...';

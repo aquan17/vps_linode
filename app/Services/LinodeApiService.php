@@ -60,6 +60,21 @@ class LinodeApiService
         return $this->post('/linode/instances', $payload);
     }
 
+    public function cloneInstance(
+        int $sourceLinodeId,
+        string $type,
+        string $region,
+        string $label
+    ): array {
+        $payload = [
+            'type' => $type,
+            'region' => $region,
+            'label' => $label,
+        ];
+
+        return $this->post('/linode/instances/' . $sourceLinodeId . '/clone', $payload);
+    }
+
     public function deleteInstance(int $linodeId): void
     {
         $this->delete('/linode/instances/' . $linodeId);

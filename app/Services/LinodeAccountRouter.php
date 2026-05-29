@@ -14,12 +14,17 @@ class LinodeAccountRouter
         $this->budget = $budget;
     }
 
-    public function getAvailableAccounts()
+    public function getAvailableAccounts(bool $isWindows = false)
     {
-        return LinodeAccount::query()
+        $query = LinodeAccount::query()
             ->where('is_active', true)
-            ->where('is_full', false)
-            ->orderBy('priority')
+            ->where('is_full', false);
+            
+        if ($isWindows) {
+            $query->whereNotNull('windows_template_id');
+        }
+
+        return $query->orderBy('priority')
             ->orderBy('id')
             ->get();
     }
@@ -28,12 +33,12 @@ class LinodeAccountRouter
      * Chọn account có đủ credit; khóa row để tránh race khi tạo đồng thời.
      * Thêm check: không nhận đơn nếu promo còn < $minDaysRequired ngày.
      */
-    public function pickForPlan(float $monthlyCostUsd, int $customerMonths): ?LinodeAccount
+    public function pickForPlan(float $monthlyCostUsd, int $customerMonths, bool $isWindows = false): ?LinodeAccount
     {
         // Tối thiểu phải còn ít nhất (customerMonths * 30) ngày, nhưng không dưới 7
         $minDaysRequired = max(7, $customerMonths * 30);
 
-        $accounts = $this->getAvailableAccounts();
+        $accounts = $this->getAvailableAccounts($isWindows);
 
         foreach ($accounts as $account) {
             $locked = DB::transaction(function () use ($account, $monthlyCostUsd, $customerMonths, $minDaysRequired) {
