@@ -55,7 +55,7 @@ class LinodeAccount extends Model
     {
         $remaining = (float) ($this->promo_remaining_usd ?? $this->promo_credit_usd);
         $reserved = (float) $this->reserved_monthly_usd;
-        $ratio = (float) config('linode.budget_safety_ratio', 0.95);
+        $ratio = (float) config('linode.budget_safety_ratio', 0.90);
 
         return max(0, ($remaining * $ratio) - $reserved);
     }

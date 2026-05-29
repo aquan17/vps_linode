@@ -1,5 +1,5 @@
 @extends('layouts.guest')
-@section('title', 'Đăng nhập — LinodeCloud')
+@section('title', 'Đăng nhập — NovaCloud')
 
 @section('content')
 <div class="p-8">

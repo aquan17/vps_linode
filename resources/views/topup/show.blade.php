@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Thanh toán — LinodeCloud')
+@section('title', 'Thanh toán — NovaCloud')
 @section('robots', 'noindex, nofollow')
 
 @section('breadcrumbs')

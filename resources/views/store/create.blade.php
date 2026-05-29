@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Tạo VPS ' . $plan['name'] . ' — LinodeCloud')
+@section('title', 'Tạo VPS ' . $plan['name'] . ' — NovaCloud')
 
 @section('breadcrumbs')
     <a href="{{ route('pricing') }}" class="hover:text-gray-900 transition-colors">Bảng giá</a>
@@ -172,6 +172,8 @@
                     <span class="inline-flex items-center px-2 py-1 rounded bg-white border border-gray-200 text-[11px] font-medium text-gray-600">⚡ {{ $plan['cores'] }} vCPU</span>
                     <span class="inline-flex items-center px-2 py-1 rounded bg-white border border-gray-200 text-[11px] font-medium text-gray-600">💾 {{ $plan['ram'] }} GB RAM</span>
                     <span class="inline-flex items-center px-2 py-1 rounded bg-white border border-gray-200 text-[11px] font-medium text-gray-600">🗄️ {{ $plan['disk'] }} GB SSD</span>
+                    <span class="inline-flex items-center px-2 py-1 rounded bg-white border border-gray-200 text-[11px] font-medium text-gray-600">🌐 {{ $plan['transfer_tb'] ?? 1 }} TB</span>
+                    <span class="inline-flex items-center px-2 py-1 rounded bg-white border border-gray-200 text-[11px] font-medium text-gray-600">🚀 40 Gbps / {{ $plan['network_out_mbps'] ?? 1000 }} Mbps</span>
                 </div>
             </div>
 

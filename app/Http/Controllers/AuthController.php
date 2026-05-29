@@ -59,7 +59,7 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('dashboard')->with('success', 'Đăng ký thành công! Chào mừng bạn đến LinodeCloud.');
+        return redirect()->route('dashboard')->with('success', 'Đăng ký thành công! Chào mừng bạn đến NovaCloud.');
     }
 
     public function logout(Request $request)

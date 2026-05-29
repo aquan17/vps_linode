@@ -192,13 +192,13 @@ class LinodeApiService
             return $json['errors'][0]['reason'];
         }
 
-        return 'Linode API error (HTTP ' . $response->status() . ')';
+        return 'Cloud API error (HTTP ' . $response->status() . ')';
     }
 
     private function requireToken(): string
     {
         if (!$this->token) {
-            throw new RuntimeException('Linode API token chưa được cấu hình.');
+            throw new RuntimeException('Cloud API token chưa được cấu hình.');
         }
 
         return $this->token;

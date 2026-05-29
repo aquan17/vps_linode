@@ -7,7 +7,7 @@ return [
     'usd_vnd_rate' => (int) env('LINODE_USD_VND_RATE', 25500),
     'promo_credit_usd' => (float) env('LINODE_PROMO_CREDIT_USD', 100),
     'promo_days' => (int) env('LINODE_PROMO_DAYS', 60),
-    'budget_safety_ratio' => (float) env('LINODE_BUDGET_SAFETY', 0.95),
+    'budget_safety_ratio' => (float) env('LINODE_BUDGET_SAFETY', 0.90),
 
     'regions' => [
         'sg-sin-2'     => 'Singapore',
@@ -37,8 +37,9 @@ return [
             'ram' => 1,
             'disk' => 25,
             'transfer_tb' => 1,
+            'network_out_mbps' => 1000,
             'cost_monthly_usd' => 5.0,
-            'price_per_month' => 45000,
+            'price_per_month' => 55000,
             'badge' => 'Tiết kiệm',
         ],
         'starter' => [
@@ -49,8 +50,9 @@ return [
             'ram' => 2,
             'disk' => 50,
             'transfer_tb' => 2,
+            'network_out_mbps' => 2000,
             'cost_monthly_usd' => 12.0,
-            'price_per_month' => 99000,
+            'price_per_month' => 119000,
             'badge' => null,
         ],
         'pro' => [
@@ -61,8 +63,9 @@ return [
             'ram' => 4,
             'disk' => 80,
             'transfer_tb' => 4,
+            'network_out_mbps' => 4000,
             'cost_monthly_usd' => 24.0,
-            'price_per_month' => 189000,
+            'price_per_month' => 229000,
             'badge' => 'Phổ biến',
         ],
     ],

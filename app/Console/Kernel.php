@@ -16,6 +16,14 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('linode:sync-accounts')->everyFifteenMinutes();
+        
+        // Quét VPS sắp hết hạn mỗi ngày vào lúc 09:00 sáng
+        $schedule->command('linode:check-expiring')->dailyAt('09:00');
+
+        // Kiểm tra và xóa VPS đã quá hạn 10 phút (Chạy mỗi phút)
+        $schedule->command('vps:delete-expired')->everyMinute()->withoutOverlapping();
+        
+        // Đồng bộ trạng thái VPS đang khởi tạo (chạy mỗi phút)
         $schedule->command('linode:sync-status')->everyMinute();
     }
 

@@ -10,7 +10,7 @@ use Illuminate\Console\Command;
 class SyncLinodeAccounts extends Command
 {
     protected $signature = 'linode:sync-accounts';
-    protected $description = 'Đồng bộ credit và reserved từ Linode API';
+    protected $description = 'Đồng bộ credit và reserved từ Cloud API';
 
     public function handle(LinodeApiService $api, LinodeBudgetService $budget): int
     {

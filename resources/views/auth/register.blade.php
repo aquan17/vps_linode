@@ -1,11 +1,11 @@
 @extends('layouts.guest')
-@section('title', 'Đăng ký — LinodeCloud')
+@section('title', 'Đăng ký — NovaCloud')
 
 @section('content')
 <div class="p-8">
     <div class="text-center mb-8">
         <h1 class="text-2xl font-bold text-gray-900">Tạo tài khoản</h1>
-        <p class="text-gray-500 mt-2 text-sm">Miễn phí — bắt đầu thuê VPS Linode siêu tốc.</p>
+        <p class="text-gray-500 mt-2 text-sm">Miễn phí — bắt đầu thuê VPS NovaCloud siêu tốc.</p>
     </div>
 
     <form method="POST" action="{{ route('register') }}" class="space-y-4">

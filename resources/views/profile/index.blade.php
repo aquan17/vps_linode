@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Thông tin cá nhân — LinodeCloud')
+@section('title', 'Thông tin cá nhân — NovaCloud')
 
 @section('breadcrumbs')
     <span>Tài khoản</span>

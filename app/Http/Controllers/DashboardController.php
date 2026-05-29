@@ -93,7 +93,7 @@ class DashboardController extends Controller
         $this->authorizeVps($vps);
 
         if (!$vps->linodeAccount || !$vps->linode_id) {
-            return back()->with('error', 'VPS chưa liên kết Linode API.');
+            return back()->with('error', 'VPS chưa liên kết Cloud API.');
         }
 
         try {
@@ -170,7 +170,7 @@ class DashboardController extends Controller
 
     // ----------------------------------------------------------------
     // Đổi root password
-    // VPS phải đang OFF — Linode API yêu cầu
+    // VPS phải đang OFF — Cloud API yêu cầu
     // ----------------------------------------------------------------
     public function changePassword(Request $request, VpsInstance $vps, LinodeApiService $api)
     {
@@ -306,7 +306,7 @@ class DashboardController extends Controller
     private function requireLinodeLink(VpsInstance $vps): void
     {
         if (!$vps->linodeAccount || !$vps->linode_id) {
-            abort(400, 'VPS chưa liên kết Linode API.');
+            abort(400, 'VPS chưa liên kết Cloud API.');
         }
     }
 

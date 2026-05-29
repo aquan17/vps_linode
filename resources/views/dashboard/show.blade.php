@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', $vps->label . ' — LinodeCloud')
+@section('title', $vps->label . ' — NovaCloud')
 
 @section('breadcrumbs')
     <a href="{{ route('dashboard') }}" class="hover:text-gray-900 transition-colors">Máy chủ VPS</a>
@@ -53,7 +53,12 @@
         <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
             <h2 class="text-base font-semibold text-gray-900 mb-6">Thông số cấu hình</h2>
             
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 pb-6 border-b border-gray-100">
+            @php
+                $planInfo = config("linode.plans.{$vps->plan_id}");
+                $transferTb = $planInfo['transfer_tb'] ?? 1;
+                $networkOut = $planInfo['network_out_mbps'] ?? 1000;
+            @endphp
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-6 pb-6 border-b border-gray-100">
                 <div>
                     <div class="text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-1">vCPU</div>
                     <div class="text-lg font-medium text-gray-900">{{ $vps->cpu ?? 1 }} Cores</div>
@@ -68,7 +73,11 @@
                 </div>
                 <div>
                     <div class="text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-1">Băng thông</div>
-                    <div class="text-lg font-medium text-gray-900">1 TB</div>
+                    <div class="text-lg font-medium text-gray-900">{{ $transferTb }} TB</div>
+                </div>
+                <div>
+                    <div class="text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-1">Mạng In / Out</div>
+                    <div class="text-sm font-medium text-gray-900 mt-1">40 Gbps / {{ $networkOut }} Mbps</div>
                 </div>
             </div>
             
