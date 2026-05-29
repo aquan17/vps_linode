@@ -75,9 +75,18 @@
                     {{ $u->created_at->format('d/m/Y') }}
                 </td>
                 <td class="px-6 py-4 text-right">
-                    <a href="{{ route('admin.users.show', $u) }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-gray-300 rounded-md text-xs font-semibold text-gray-700 bg-white hover:bg-gray-50 transition-colors shadow-sm">
-                        Xem chi tiết
-                    </a>
+                    <div class="flex items-center justify-end gap-2">
+                        <a href="{{ route('admin.users.show', $u) }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-gray-300 rounded-md text-xs font-semibold text-gray-700 bg-white hover:bg-gray-50 transition-colors shadow-sm">
+                            Xem chi tiết
+                        </a>
+                        <form method="POST" action="{{ route('admin.users.destroy', $u) }}" onsubmit="return confirm('Bạn có chắc chắn muốn xóa người dùng này không? Hành động này không thể hoàn tác.');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-red-200 rounded-md text-xs font-semibold text-red-600 bg-red-50 hover:bg-red-100 transition-colors shadow-sm">
+                                Xóa
+                            </button>
+                        </form>
+                    </div>
                 </td>
             </tr>
             @empty
@@ -124,7 +133,14 @@
                     <div class="text-xs text-gray-500">VPS đang chạy: <span class="font-bold text-gray-900">{{ $u->vps_instances_count }}</span></div>
                     <div class="text-xs text-gray-500 font-mono">{{ $u->created_at->format('d/m/Y') }}</div>
                 </div>
-                <a href="{{ route('admin.users.show', $u) }}" class="inline-block text-cloud-600 hover:text-cloud-800 font-semibold text-xs px-3 py-1.5 border border-cloud-200 rounded bg-cloud-50">Xem chi tiết</a>
+                <div class="flex items-center gap-2">
+                    <a href="{{ route('admin.users.show', $u) }}" class="inline-block text-cloud-600 hover:text-cloud-800 font-semibold text-xs px-3 py-1.5 border border-cloud-200 rounded bg-cloud-50">Xem chi tiết</a>
+                    <form method="POST" action="{{ route('admin.users.destroy', $u) }}" onsubmit="return confirm('Bạn có chắc chắn muốn xóa người dùng này không?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="inline-block text-red-600 hover:text-red-800 font-semibold text-xs px-3 py-1.5 border border-red-200 rounded bg-red-50">Xóa</button>
+                    </form>
+                </div>
             </div>
         </div>
         @endforeach

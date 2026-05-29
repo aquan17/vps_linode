@@ -134,4 +134,20 @@ class UserController extends Controller
 
         return back()->with('success', 'Đã từ chối yêu cầu nạp tiền.');
     }
+
+    // ── Xóa User ─────────────────────────────────────────────────────
+    public function destroy(User $user)
+    {
+        if ($user->id === Auth::id()) {
+            return back()->with('error', 'Không thể tự xóa tài khoản của chính mình.');
+        }
+
+        if ($user->vpsInstances()->count() > 0) {
+            return back()->with('error', 'Không thể xóa người dùng đang có VPS. Vui lòng yêu cầu người dùng xóa hết VPS trước.');
+        }
+
+        $user->delete();
+
+        return back()->with('success', 'Đã xóa người dùng thành công.');
+    }
 }

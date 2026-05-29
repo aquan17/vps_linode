@@ -81,6 +81,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/users/{user}',                    [AdminUserController::class, 'show'])->name('users.show');
     Route::post('/users/{user}/balance',           [AdminUserController::class, 'adjustBalance'])->name('users.balance');
     Route::post('/users/{user}/toggle-admin',      [AdminUserController::class, 'toggleAdmin'])->name('users.toggle-admin');
+    Route::delete('/users/{user}',                 [AdminUserController::class, 'destroy'])->name('users.destroy');
 
     // All Instances
     Route::get('/instances',                       [\App\Http\Controllers\Admin\InstanceController::class, 'index'])->name('instances.index');
