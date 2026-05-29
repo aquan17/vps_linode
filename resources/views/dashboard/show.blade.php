@@ -284,7 +284,7 @@ function copyText(text, btn) {
             if (ip) ip.textContent = data.public_ip;
             const ssh = document.getElementById('ssh-cmd');
             const isWindows = @json($isWindows);
-            if (ssh) ssh.textContent = isWindows ? data.public_ip + ' (User: Administrator)' : 'ssh root@' + data.public_ip;
+            if (ssh) ssh.textContent = isWindows ? 'Administrator' : 'ssh root@' + data.public_ip;
         }
     }
 
