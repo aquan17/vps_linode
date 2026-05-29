@@ -81,7 +81,7 @@
                 </div>
             </div>
             
-            <div class="pt-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6">
                 <div>
                     <div class="text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-2">Địa chỉ IPv4</div>
                     <div class="flex items-center gap-2">
@@ -91,6 +91,13 @@
                             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" /></svg>
                         </button>
                         @endif
+                    </div>
+                </div>
+                <div>
+                    <div class="text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-2">Thời gian</div>
+                    <div class="text-sm">
+                        <div class="mb-1 text-gray-500">Tạo: <span class="font-medium text-gray-900">{{ $vps->created_at->format('d/m/Y H:i') }}</span></div>
+                        <div class="text-gray-500">Hết hạn: <span class="font-medium {{ $vps->expires_at && $vps->expires_at->isPast() ? 'text-red-600' : 'text-gray-900' }}">{{ $vps->expires_at ? $vps->expires_at->format('d/m/Y H:i') : 'Vĩnh viễn' }}</span></div>
                     </div>
                 </div>
             </div>

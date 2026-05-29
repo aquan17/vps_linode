@@ -37,6 +37,7 @@
                     <th class="px-6 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider">Chủ sở hữu</th>
                     <th class="px-6 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider">Cấu hình</th>
                     <th class="px-6 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider">Tài khoản Node</th>
+                    <th class="px-6 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider">Thời gian</th>
                     <th class="px-6 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider">Trạng thái</th>
                     <th class="px-6 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider text-right">Thao tác</th>
                 </tr>
@@ -74,6 +75,10 @@
                     @else
                         <span class="text-gray-400 italic">Không rõ</span>
                     @endif
+                </td>
+                <td class="px-6 py-4">
+                    <div class="text-[11px] text-gray-500 mb-0.5">Tạo: <span class="font-semibold text-gray-700">{{ $vps->created_at->format('d/m/Y') }}</span></div>
+                    <div class="text-[11px] text-gray-500">Hết: <span class="font-semibold {{ $vps->expires_at && $vps->expires_at->isPast() ? 'text-red-600' : 'text-gray-700' }}">{{ $vps->expires_at ? $vps->expires_at->format('d/m/Y') : 'Vĩnh viễn' }}</span></div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                     <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold border {{ $statusBg }}">
@@ -161,9 +166,13 @@
                 </div>
             </div>
 
-            <div class="flex justify-between items-center text-[11px] text-gray-500 bg-gray-50 p-2 rounded">
+            <div class="flex justify-between items-center text-[11px] text-gray-500 bg-gray-50 p-2 rounded mb-2">
                 <span>{{ $vps->ram ?? 1 }}GB RAM · {{ $vps->cpu ?? 1 }}vCPU</span>
                 <span>Node: {{ $vps->linodeAccount->label ?? '—' }}</span>
+            </div>
+            <div class="flex justify-between items-center text-[11px] text-gray-500">
+                <span>Tạo: <span class="font-semibold text-gray-700">{{ $vps->created_at->format('d/m/Y') }}</span></span>
+                <span>Hết: <span class="font-semibold {{ $vps->expires_at && $vps->expires_at->isPast() ? 'text-red-600' : 'text-gray-700' }}">{{ $vps->expires_at ? $vps->expires_at->format('d/m/Y') : 'Vĩnh viễn' }}</span></span>
             </div>
         </div>
         @endforeach

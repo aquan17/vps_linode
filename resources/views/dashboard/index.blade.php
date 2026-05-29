@@ -59,6 +59,7 @@
                         <th class="px-6 py-4">Tên & Khu vực</th>
                         <th class="px-6 py-4">Địa chỉ IP</th>
                         <th class="px-6 py-4">Cấu hình</th>
+                        <th class="px-6 py-4">Thời gian</th>
                         <th class="px-6 py-4">Trạng thái</th>
                         <th class="px-6 py-4 text-right">Thao tác</th>
                     </tr>
@@ -113,6 +114,10 @@
                                         <span class="text-[10px] text-gray-400 uppercase">SSD</span>
                                     </div>
                                 </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="text-xs text-gray-500 mb-1">Tạo: <span class="font-medium text-gray-700">{{ $vps->created_at->format('d/m/Y') }}</span></div>
+                                <div class="text-xs text-gray-500">Hết hạn: <span class="font-medium {{ $vps->expires_at && $vps->expires_at->isPast() ? 'text-red-600' : 'text-gray-700' }}">{{ $vps->expires_at ? $vps->expires_at->format('d/m/Y') : 'Vĩnh viễn' }}</span></div>
                             </td>
                             <td class="px-6 py-4">
                                 <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold {{ $statusBg }}">
@@ -176,6 +181,13 @@
                         <div>
                             <span class="block text-xs font-medium text-gray-500 mb-1">Cấu hình</span>
                             <span class="text-sm font-semibold text-gray-900">{{ $vps->ram ?? 1 }}GB RAM · {{ $vps->cpu ?? 1 }}vCPU</span>
+                        </div>
+                        <div class="col-span-2 border-t border-gray-100 pt-3 mt-1">
+                            <span class="block text-xs font-medium text-gray-500 mb-1">Thời gian</span>
+                            <div class="flex justify-between text-xs">
+                                <div><span class="text-gray-500">Tạo:</span> <span class="font-medium text-gray-900">{{ $vps->created_at->format('d/m/Y') }}</span></div>
+                                <div><span class="text-gray-500">Hết hạn:</span> <span class="font-medium {{ $vps->expires_at && $vps->expires_at->isPast() ? 'text-red-600' : 'text-gray-900' }}">{{ $vps->expires_at ? $vps->expires_at->format('d/m/Y') : 'Vĩnh viễn' }}</span></div>
+                            </div>
                         </div>
                     </div>
 
