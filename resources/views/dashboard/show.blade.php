@@ -81,7 +81,7 @@
                 </div>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6">
+            <div class="pt-6">
                 <div>
                     <div class="text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-2">Địa chỉ IPv4</div>
                     <div class="flex items-center gap-2">
@@ -92,10 +92,6 @@
                         </button>
                         @endif
                     </div>
-                </div>
-                <div>
-                    <div class="text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-2">Linode ID</div>
-                    <div class="font-mono text-gray-500">{{ $vps->linode_id ?? '—' }}</div>
                 </div>
             </div>
         </div>
