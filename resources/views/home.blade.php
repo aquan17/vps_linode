@@ -235,13 +235,9 @@
                     <h3 class="text-xl font-bold text-gray-900">{{ $p['name'] }}</h3>
                     <p class="text-sm text-gray-500 mt-2">Dành cho các ứng dụng {{ $isPopular ? 'chuyên nghiệp' : 'vừa và nhỏ' }}.</p>
                     
-                    <div class="mt-6 mb-6 flex items-baseline text-gray-900">
-                        <span class="text-5xl font-extrabold tracking-tight">${{ number_format($p['cost_monthly_usd']) }}</span>
-                        <span class="ml-1 text-sm font-medium text-gray-500">/mo</span>
-                    </div>
-                    
-                    <div class="text-xs font-semibold text-cloud-600 mb-6 bg-cloud-50 px-3 py-1.5 rounded inline-block w-fit">
-                        ~ {{ number_format($p['price_per_month']) }} VNĐ
+                    <div class="mt-6 mb-8 flex items-baseline text-gray-900">
+                        <span class="text-4xl font-extrabold tracking-tight">{{ number_format($p['price_per_month']) }}</span>
+                        <span class="ml-1 text-sm font-medium text-gray-500">VNĐ / tháng</span>
                     </div>
 
                     <ul class="space-y-4 flex-grow mb-8 text-sm text-gray-700">
@@ -265,7 +261,7 @@
 
                     <a href="{{ auth()->check() ? route('store.create', $pid) : route('login') }}" class="block w-full text-center py-2.5 rounded-md text-sm font-bold transition-colors
                         {{ $isPopular ? 'bg-cloud-600 hover:bg-cloud-700 text-white shadow-sm' : 'bg-white border border-gray-300 hover:border-gray-400 text-gray-700 hover:bg-gray-50' }}">
-                        Select {{ $p['name'] }}
+                        Chọn {{ $p['name'] }}
                     </a>
                 </div>
             @endforeach
