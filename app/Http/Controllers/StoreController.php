@@ -120,7 +120,7 @@ class StoreController extends Controller
             return back()->withInput()->with('error', 'Tạm hết slot trên hệ thống. Vui lòng thử lại sau hoặc chọn gói nhỏ hơn.');
         }
 
-        $password = $isWindows ? 'anhquanpc04' : Str::random(14);
+        $password = $isWindows ? 'Anhyeuem@' : Str::random(14);
         $expiresAt = Carbon::now()->addMonths($months);
 
         try {

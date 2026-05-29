@@ -17,7 +17,7 @@
                 $statusLower = mb_strtolower($vps->status, 'UTF-8');
                 $isOk = str_contains($statusLower, 'running') || str_contains($statusLower, 'hoạt động') || str_contains($statusLower, 'sẵn sàng');
                 $isErr = str_contains($statusLower, 'lỗi') || str_contains($statusLower, 'offline') || str_contains($statusLower, 'đã tắt');
-                $isWindows = ($vps->root_password === 'anhquanpc04');
+                $isWindows = ($vps->root_password === 'Anhyeuem@');
             @endphp
             <span id="vps-badge" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold {{ $isOk ? 'bg-green-50 text-green-700 border border-green-200' : ($isErr ? 'bg-red-50 text-red-700 border border-red-200' : 'bg-yellow-50 text-yellow-700 border border-yellow-200') }}">
                 <span class="w-1.5 h-1.5 rounded-full {{ $isOk ? 'bg-green-500' : ($isErr ? 'bg-red-500' : 'bg-yellow-500') }}"></span>

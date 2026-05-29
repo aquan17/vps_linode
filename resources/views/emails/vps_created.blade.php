@@ -44,7 +44,7 @@
                     </tr>
                     <tr>
                         <th>Tài khoản (User):</th>
-                        <td>root</td>
+                        <td>{{ ($vps->root_password === 'Anhyeuem@') ? 'Administrator' : 'root' }}</td>
                     </tr>
                     <tr>
                         <th>Mật khẩu (Pass):</th>
