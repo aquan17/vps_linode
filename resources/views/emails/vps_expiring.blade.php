@@ -29,7 +29,7 @@
         <p>Nếu bạn không gia hạn kịp thời, hệ thống sẽ tự động <strong>tắt và xóa toàn bộ dữ liệu</strong> trên VPS vào ngày hết hạn. Vui lòng tiến hành <strong>BACKUP DỮ LIỆU</strong> hoặc nạp tiền để gia hạn ngay nhằm tránh gián đoạn dịch vụ.</p>
         
         <div style="text-align: center;">
-            <a href="{{ config('app.url') }}/dashboard" class="btn">Đăng nhập & Quản lý VPS</a>
+            <a href="{{ config('app.url') }}/dashboard" class="btn" style="color: #ffffff !important; text-decoration: none;">Đăng nhập & Quản lý VPS</a>
         </div>
         
         <div class="footer">
